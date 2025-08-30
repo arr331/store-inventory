@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <h2>Sales</h2>
+  
+    <!-- Barcode Input -->
+    <input
+      class="form-control mb-3"
+      [(ngModel)]="barcodeInput"
+      (keydown.enter)="onBarcodeScanned()"
+      placeholder="Scan product barcode"
+      autofocus
+    />
+  
+    <!-- Cart Table -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Subtotal</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart; let i = index">
+          <td>{{ item.name }}</td>
+          <td>
+            <input type="number" class="form-control" [(ngModel)]="item.quantity" (change)="updateTotal()" />
+          </td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.price * item.quantity }}</td>
+          <td><button class="btn btn-danger btn-sm" (click)="removeItem(i)">X</button></td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Total and Complete Sale -->
+    <h4>Total: {{ total }}</h4>
+    <button class="btn btn-success" (click)="completeSale()" [disabled]="cart.length === 0">Complete Sale</button>
+  </div>
+  

@@ -1,0 +1,60 @@
+<div class="container mt-4">
+    <h2>Product Management</h2>
+    <div *ngIf="editMode" class="alert alert-info mt-2">
+        Product found. Ready to edit.
+    </div>
+    <div *ngIf="!editMode && newProduct.barcode" class="alert alert-warning mt-2">
+        No product found. You can add a new one.
+    </div>
+    
+  
+    <!-- Product Form -->
+    <form (ngSubmit)="addProduct()" class="mb-3">
+      <input class="form-control mb-2" [(ngModel)]="newProduct.barcode" name="barcode" placeholder="Barcode" required />
+      <input
+        class="form-control mb-2"
+        [(ngModel)]="newProduct.barcode"
+        name="barcode"
+        placeholder="Scan Barcode"
+        (keydown.enter)="onBarcodeScanned()"
+        autofocus
+      />
+      <input class="form-control mb-2" [(ngModel)]="newProduct.name" name="name" placeholder="Name" required />
+      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.purchasePrice" name="purchasePrice" placeholder="Purchase Price" required />
+      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.salePrice" name="salePrice" placeholder="Sale Price" required />
+      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.stock" name="stock" placeholder="Stock" required />
+      <input class="form-control mb-2" [(ngModel)]="newProduct.category" name="category" placeholder="Category" />
+      <button class="btn btn-primary" type="submit">{{ editMode ? 'Update' : 'Add' }} Product</button>
+      <button class="btn btn-secondary ms-2" type="button" (click)="resetForm()" *ngIf="editMode">Cancel</button>
+    </form>
+  
+    <!-- Products Table -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Barcode</th>
+          <th>Name</th>
+          <th>Purchase Price</th>
+          <th>Sale Price</th>
+          <th>Stock</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.barcode }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.purchasePrice }}</td>
+          <td>{{ product.salePrice }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.category }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="editProduct(product)">Edit</button>
+            <button class="btn btn-sm btn-danger ms-2" (click)="deleteProduct(product.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

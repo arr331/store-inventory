@@ -1,0 +1,21 @@
+<div class="container mt-4">
+    <h2>Monthly Sales Report</h2>
+  
+    <div class="row mb-3">
+      <div class="col">
+        <input type="number" [(ngModel)]="selectedYear" class="form-control" placeholder="Year">
+      </div>
+      <div class="col">
+        <input type="number" [(ngModel)]="selectedMonth" class="form-control" placeholder="Month (1-12)">
+      </div>
+      <div class="col">
+        <button class="btn btn-primary" (click)="loadReport()">Load Report</button>
+      </div>
+    </div>
+  
+    <div class="alert alert-info">
+      <strong>Total Sales:</strong> {{ totalSales }} <br>
+      <strong>Total Revenue:</strong> ${{ totalRevenue | number:'1.2-2' }}
+    </div>
+  </div>
+  

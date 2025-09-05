@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h2>Monthly Sales Report</h2>
+    <h2>Reporte mensual de ventas</h2>
   
     <div class="row mb-3">
       <div class="col">
@@ -9,13 +9,13 @@
         <input type="number" [(ngModel)]="selectedMonth" class="form-control" placeholder="Month (1-12)">
       </div>
       <div class="col">
-        <button class="btn btn-primary" (click)="loadReport()">Load Report</button>
+        <button class="btn btn-primary" (click)="loadReport()">Cargar reporte</button>
       </div>
     </div>
   
     <div class="alert alert-info">
-      <strong>Total Sales:</strong> {{ totalSales }} <br>
-      <strong>Total Revenue:</strong> ${{ totalRevenue | number:'1.2-2' }}
+      <strong>Total ventas:</strong> {{ totalSales }} <br>
+      <strong>Total Ganancia:</strong> {{ totalRevenue | currency:'COP':'symbol':'1.0-0':'es-CO' }}
     </div>
   </div>
   

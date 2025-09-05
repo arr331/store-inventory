@@ -1,57 +1,148 @@
 <div class="container mt-4">
-    <h2>Product Management</h2>
+    <h2>Inventario
+      <button class="btn ms-2" type="button"(click)="resetForm()">
+        Reiniciar <i class="bi bi-repeat"></i>
+      </button>
+
+    </h2>
+
+    <hr>
     <div *ngIf="editMode" class="alert alert-info mt-2">
-        Product found. Ready to edit.
+        Producto encontrado, listo para editar
     </div>
     <div *ngIf="!editMode && newProduct.barcode" class="alert alert-warning mt-2">
-        No product found. You can add a new one.
+        No se encuentra el producto, listo para agregar
     </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">{{ editMode ? 'Editar' : 'Agregar' }} Producto</h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <!-- Código de barras -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Código de barras</label>
+              <input
+                class="form-control"
+                [(ngModel)]="newProduct.barcode"
+                name="barcode"
+                placeholder="Escanee el código"
+                (keydown.enter)="onBarcodeScanned()"
+                autofocus
+              />
+            </div>
     
-  
-    <!-- Product Form -->
-    <form (ngSubmit)="addProduct()" class="mb-3">
-      <input class="form-control mb-2" [(ngModel)]="newProduct.barcode" name="barcode" placeholder="Barcode" required />
-      <input
-        class="form-control mb-2"
-        [(ngModel)]="newProduct.barcode"
-        name="barcode"
-        placeholder="Scan Barcode"
-        (keydown.enter)="onBarcodeScanned()"
-        autofocus
-      />
-      <input class="form-control mb-2" [(ngModel)]="newProduct.name" name="name" placeholder="Name" required />
-      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.purchasePrice" name="purchasePrice" placeholder="Purchase Price" required />
-      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.salePrice" name="salePrice" placeholder="Sale Price" required />
-      <input class="form-control mb-2" type="number" [(ngModel)]="newProduct.stock" name="stock" placeholder="Stock" required />
-      <input class="form-control mb-2" [(ngModel)]="newProduct.category" name="category" placeholder="Category" />
-      <button class="btn btn-primary" type="submit">{{ editMode ? 'Update' : 'Add' }} Product</button>
-      <button class="btn btn-secondary ms-2" type="button" (click)="resetForm()" *ngIf="editMode">Cancel</button>
-    </form>
+            <!-- Nombre -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nombre</label>
+              <input
+                class="form-control"
+                [(ngModel)]="newProduct.name"
+                name="name"
+                placeholder="Nombre del producto"
+                required
+              />
+            </div>
+          </div>
+    
+          <div class="row">
+            <!-- Precio de compra -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Precio compra</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="newProduct.purchasePrice"
+                name="purchasePrice"
+                placeholder="Ingrese precio de compra"
+                min="0"
+                required
+              />
+            </div>
+    
+            <!-- Precio de venta -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Precio venta</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="newProduct.salePrice"
+                name="salePrice"
+                placeholder="Ingrese precio de venta"
+                required
+              />
+            </div>
+    
+            <!-- Stock -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="newProduct.stock"
+                name="stock"
+                placeholder="Cantidad en inventario"
+                required
+              />
+            </div>
+          </div>
+    
+          <!-- Botones -->
+          <div class="d-flex justify-content-{{editMode ? 'between' : 'end'}}">
+     
+            <button
+              class="btn btn-danger ms-2"
+              type="button"
+              (click)="deleteProduct(selectedProductId, true)"
+              *ngIf="editMode"
+            >
+              Eliminar
+            </button>
+            <div>
+              <button
+              class="btn btn-secondary ms-2"
+              type="button"
+              (click)="resetForm()"
+              *ngIf="editMode"
+              >
+                Cancelar
+              </button>
+              <button class="btn btn-success ms-2" type="button" [disabled]="buttonDisable()" (click)="addProduct()">
+                {{ editMode ? 'Guardar cambios' : 'Agregar producto' }}
+              </button>
+            </div>
+   
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <hr>
   
     <!-- Products Table -->
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Barcode</th>
-          <th>Name</th>
-          <th>Purchase Price</th>
-          <th>Sale Price</th>
+          <th>C. de barras</th>
+          <th>Nombre</th>
+          <th>Precio compra</th>
+          <th>Precio venta</th>
           <th>Stock</th>
-          <th>Category</th>
-          <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let product of products">
           <td>{{ product.barcode }}</td>
           <td>{{ product.name }}</td>
-          <td>{{ product.purchasePrice }}</td>
-          <td>{{ product.salePrice }}</td>
+          <td>{{ product.purchasePrice | currency:'COP':'symbol':'1.0-0':'es-CO' }}</td>
+          <td>{{ product.salePrice | currency:'COP':'symbol':'1.0-0':'es-CO'  }}</td>
           <td>{{ product.stock }}</td>
-          <td>{{ product.category }}</td>
           <td>
-            <button class="btn btn-sm btn-warning" (click)="editProduct(product)">Edit</button>
-            <button class="btn btn-sm btn-danger ms-2" (click)="deleteProduct(product.id!)">Delete</button>
+            <button class="btn btn-sm btn-warning" (click)="editProduct(product)">Editar</button>
+            <button class="btn btn-sm btn-danger ms-2" (click)="deleteProduct(product.id!)">Eliminar</button>
           </td>
         </tr>
       </tbody>

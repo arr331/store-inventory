@@ -22,7 +22,7 @@ export class SalesHistoryComponent implements OnInit {
   }
 
   async cancelSale(sale: Sale): Promise<void> {
-    if (!confirm('Are you sure you want to cancel this sale?')) return;
+    if (!confirm('¿Seguro quiere cancelar esta compra?')) return;
   
     for (const item of sale.items) {
       const product = await firstValueFrom(this.productsService.getProductById(item.productId));

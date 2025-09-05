@@ -4,12 +4,16 @@ import { ProductsComponent } from './pages/products/products.component';
 import { SalesHistoryComponent } from './pages/sales-history/sales-history.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { adminGuard, authGuard } from './services/auth.service';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
-  { path: 'products', component: ProductsComponent },
-  { path: 'sales', component: SalesComponent },
-  { path: 'sales-history', component: SalesHistoryComponent },
-  { path: 'reports', component: ReportsComponent }
+  { path: 'login', component: LoginComponent},
+  { path: 'inventario', component: ProductsComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'vender', component: SalesComponent, canActivate: [authGuard] },
+  { path: 'historial', component: SalesHistoryComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'reportes', component: ReportsComponent, canActivate: [authGuard, adminGuard] },
+  { path: '', redirectTo: 'vender', pathMatch: 'full' }
 ];
 
 @NgModule({

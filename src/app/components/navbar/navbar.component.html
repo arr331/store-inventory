@@ -1,0 +1,21 @@
+<!-- navbar.component.html -->
+<nav *ngIf="!isLoginPage()" class="d-flex justify-content-center bg-dark p-3">
+    <a *ngIf="isAdmin()" routerLink="/inventario" routerLinkActive="active"
+       class="btn btn-warning btn-lg mx-2">Inventario</a>
+    <a routerLink="/vender" routerLinkActive="active"
+       class="btn btn-warning btn-lg mx-2">Vender</a>
+    <a *ngIf="isAdmin()" routerLink="/historial" routerLinkActive="active"
+       class="btn btn-warning btn-lg mx-2">Historial</a>
+    <a *ngIf="isAdmin()" routerLink="/reportes" routerLinkActive="active"
+       class="btn btn-warning btn-lg mx-2">Reporte</a>
+
+       <div class="d-flex align-items-center ms-auto">
+         <i class="bi bi-person-circle fs-4 me-2"></i>
+         <span class="me-3" style="color: white"><i class="bi bi-person-circle"></i> {{user()}}</span>
+         <button class="btn btn-outline-danger btn-sm" (click)="authService.logout()">
+           Cerrar sesión
+         </button>
+       </div>
+  </nav>
+  
+  

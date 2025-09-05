@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
+import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface SaleItem {
@@ -14,29 +14,30 @@ export interface Sale {
   date: any;
   total: number;
   items: SaleItem[];
+  user: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class SalesService {
-  private salesCollection: AngularFirestoreCollection<Sale>;
-
-  constructor(private afs: AngularFirestore) {
-    this.salesCollection = afs.collection<Sale>('sales');
-  }
+  private firestore: Firestore = inject(Firestore);
+  private salesCollection = collection(this.firestore, 'sales');
 
   getSales(): Observable<Sale[]> {
-    return this.salesCollection.valueChanges({ idField: 'id' });
+    return collectionData(this.salesCollection, { idField: 'id' }) as Observable<Sale[]>;
   }
 
   addSale(sale: Sale) {
-    return this.salesCollection.add(sale);
+    return addDoc(this.salesCollection, sale);
   }
 
   deleteSale(id: string) {
-    return this.salesCollection.doc(id).delete();
+    const saleDoc = doc(this.firestore, `sales/${id}`);
+    return deleteDoc(saleDoc);
   }
 
   getSaleById(id: string): Observable<Sale | undefined> {
-    return this.salesCollection.doc<Sale>(id).valueChanges({ idField: 'id' });
+    const saleDoc = doc(this.firestore, `sales/${id}`);
+    return docData(saleDoc, { idField: 'id' }) as Observable<Sale | undefined>;
   }
 }
+

@@ -1,5 +1,14 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  docData
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Product {
@@ -12,32 +21,34 @@ export interface Product {
   category?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductsService {
-  private productsCollection: AngularFirestoreCollection<Product>;
-
-  constructor(private afs: AngularFirestore) {
-    this.productsCollection = afs.collection<Product>('products');
-  }
+  private firestore: Firestore = inject(Firestore);
+  private productsCollection = collection(this.firestore, 'products');
 
   getProducts(): Observable<Product[]> {
-    return this.productsCollection.valueChanges({ idField: 'id' });
+    return collectionData(this.productsCollection, { idField: 'id' }) as Observable<Product[]>;
   }
 
   addProduct(product: Product) {
-    return this.productsCollection.add(product);
+    return addDoc(this.productsCollection, product);
   }
 
   updateProduct(id: string, data: Partial<Product>) {
-    return this.productsCollection.doc(id).update(data);
+    const productDoc = doc(this.firestore, `products/${id}`);
+    return updateDoc(productDoc, data);
   }
 
   deleteProduct(id: string) {
-    return this.productsCollection.doc(id).delete();
+    const productDoc = doc(this.firestore, `products/${id}`);
+    return deleteDoc(productDoc);
   }
- 
+
   getProductById(id: string): Observable<Product | undefined> {
-    return this.productsCollection.doc<Product>(id).valueChanges({ idField: 'id' });
+    const productDoc = doc(this.firestore, `products/${id}`);
+    return docData(productDoc, { idField: 'id' }) as Observable<Product | undefined>;
   }
-  
 }
+

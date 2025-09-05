@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService, Product } from '../../services/products.service';
 import { SalesService, Sale, SaleItem } from '../../services/sales.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sales',
@@ -15,7 +16,8 @@ export class SalesComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
-    private salesService: SalesService
+    private salesService: SalesService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +68,8 @@ export class SalesComponent implements OnInit {
     const sale: Sale = {
       date: Timestamp.now(),
       total: this.total,
-      items: this.cart
+      items: this.cart,
+      user: this.authService.getUser()
     };
 
     this.salesService.addSale(sale).then(() => {
@@ -81,6 +84,11 @@ export class SalesComponent implements OnInit {
       this.cart = [];
       this.total = 0;
     });
+  }
+
+  resetSale() {
+    this.cart = [];
+    this.total = 0;
   }
 }
 

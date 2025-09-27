@@ -16,6 +16,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { registerLocaleData } from '@angular/common';
 import localeEsCO from '@angular/common/locales/es-CO';
+import { LiquidationComponent } from './pages/liquidation/liquidation.component';
 
 registerLocaleData(localeEsCO);
 
@@ -28,7 +29,8 @@ registerLocaleData(localeEsCO);
     SalesHistoryComponent,
     ReportsComponent,
     NavbarComponent,
-    LoginComponent
+    LoginComponent,
+    LiquidationComponent
   ],
   imports: [
     BrowserModule,

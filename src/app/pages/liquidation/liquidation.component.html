@@ -1,0 +1,78 @@
+<!-- src/app/liquidation/liquidation.component.html -->
+
+<div class="container mt-4">
+    <h2>Liquidaciones de ventas</h2>
+  
+    <!-- Filters -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="user">Usuario a liquidar</label>
+        <select id="user" class="form-select" [(ngModel)]="selectedUser">
+          <option value="" disabled>Seleccione el usuario a liquidar</option>
+          <option *ngFor="let u of users" [value]="u.name">{{ u.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="date">Fecha</label>
+        <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" />
+      </div>
+      <div class="col-md-4 d-flex align-items-end">
+        <button class="btn btn-primary" (click)="searchSales()">Buscar ventas</button>
+      </div>
+    </div>
+  
+    <!-- Pending Sales -->
+    <h4>Ventas pendientes a liquidar</h4>
+    <table class="table table-striped" *ngIf="pendingSales.length">
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Total</th>
+          <th>Productos</th>
+          <th>Usuario</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sale of pendingSales">
+            <td>{{ sale.date.toDate() | date: 'shortTime' }}</td>
+            <td>{{ sale.total | currency:'COP':'symbol':'1.0-0':'es-CO'  }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let item of sale.items">
+                  {{ item.name }} (x{{ item.quantity }}) - {{ item.price | currency:'COP':'symbol':'1.0-0':'es-CO'  }}
+                </li>
+              </ul>
+            </td>
+            <td>{{sale.user}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!pendingSales.length">No hay ventas pendientes</p>
+  
+    <button class="btn btn-success mt-2" (click)="liquidate()" [disabled]="!pendingSales.length">
+      Liquidar ventas
+    </button>
+  
+    <hr />
+  
+    <!-- Previous Liquidations -->
+    <h4>Liquidaciones anteriores</h4>
+    <table class="table table-bordered" *ngIf="previousLiquidations.length">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th># Ventas</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of previousLiquidations">
+          <td>{{ l.createdAt.toDate() | date:'short' }}</td>
+          <td>{{ l.totalSales }}</td>
+          <td>${{ l.totalAmount | number:'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!previousLiquidations.length">No hay liquidaciones del día seleccionado</p>
+  </div>
+  

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductsService, Product } from '../../services/products.service';
 import { SalesService, Sale, SaleItem } from '../../services/sales.service';
 import { Timestamp } from '@angular/fire/firestore';
@@ -8,17 +8,24 @@ import { AuthService } from 'src/app/services/auth.service';
   selector: 'app-sales',
   templateUrl: './sales.component.html'
 })
-export class SalesComponent implements OnInit {
+export class SalesComponent implements OnInit, AfterViewInit {
+  @ViewChild('barcodeInputRef') barcodeInputRef!: ElementRef;
+
   products: Product[] = [];
   cart: SaleItem[] = [];
   barcodeInput = '';
   total = 0;
+  disableSaleButton = false;
 
   constructor(
     private productsService: ProductsService,
     private salesService: SalesService,
     private authService: AuthService
-  ) {}
+  ) { }
+
+  ngAfterViewInit() {
+    this.barcodeInputRef.nativeElement.focus();
+  }
 
   ngOnInit(): void {
     this.productsService.getProducts().subscribe(data => {
@@ -62,8 +69,14 @@ export class SalesComponent implements OnInit {
     this.total = this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
+  disableSale() {
+    return this.cart.length === 0 || this.cart.some(i => !Number.isInteger(i.quantity) || i.quantity <= 0) || this.disableSaleButton
+  }
+
   completeSale(): void {
     if (this.cart.length === 0) return;
+
+    this.disableSaleButton = true;
 
     const sale: Sale = {
       date: Timestamp.now(),
@@ -83,12 +96,14 @@ export class SalesComponent implements OnInit {
       });
       this.cart = [];
       this.total = 0;
+      this.disableSaleButton = false;
     });
   }
 
   resetSale() {
     this.cart = [];
     this.total = 0;
+    this.disableSaleButton = false;
   }
 }
 

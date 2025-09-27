@@ -6,8 +6,8 @@ import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
   selector: 'app-products',
   templateUrl: './products.component.html'
 })
-export class ProductsComponent implements OnInit {
-  @ViewChild('barcodeInput') barcodeInput!: ElementRef;
+export class ProductsComponent implements OnInit, AfterViewInit {
+  @ViewChild('barcodeInputRef') barcodeInput!: ElementRef;
 
   ngAfterViewInit(): void {
     this.barcodeInput.nativeElement.focus();
@@ -28,7 +28,6 @@ export class ProductsComponent implements OnInit {
 
   addProduct(): void {
     if (this.editMode && this.selectedProductId) {
-      console.log("LLAMO ADD")
       this.productsService.updateProduct(this.selectedProductId, this.newProduct).then(() => {
         this.resetForm();
       });
@@ -43,6 +42,12 @@ export class ProductsComponent implements OnInit {
     this.newProduct = { ...product };
     this.selectedProductId = product.id || null;
     this.editMode = true;
+  }
+  
+  onPriceChange(value: string) {
+    // quitar símbolos y comas, luego convertir a número
+    const cleanValue = value.replace(/[^0-9]/g, '');
+    this.newProduct.purchasePrice = Number(cleanValue);
   }
 
   deleteProduct(id: string | null, fromForm: boolean = false): void {
@@ -66,10 +71,8 @@ export class ProductsComponent implements OnInit {
     );
   
     if (existingProduct) {
-      console.log("EXISTE PRODUCTO")
       this.editProduct(existingProduct);
     } else {
-      console.log("NO EXISTE")
       this.editMode = false;
       this.selectedProductId = null;
       this.newProduct = { ...this.newProduct, name: '', purchasePrice: 0, salePrice: 0, stock: 0, id: '' };

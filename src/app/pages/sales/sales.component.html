@@ -1,12 +1,14 @@
 <div class="container mt-4">
-    <h2>Vender
-      <button class="btn ms-2" type="button"(click)="resetSale()">
-        Reiniciar <i class="bi bi-repeat"></i>
+    <h2 class="d-flex justify-content-between">Vender
+      <button class="btn btn-secondary ms-2" type="button"(click)="resetSale()">
+        Cancelar <i class="bi bi-x-circle"></i>
       </button>
     </h2>
+    <hr>
   
     <!-- Barcode Input -->
     <input
+      #barcodeInputRef
       class="form-control mb-3"
       [(ngModel)]="barcodeInput"
       (keydown.enter)="onBarcodeScanned()"
@@ -29,7 +31,11 @@
         <tr *ngFor="let item of cart; let i = index">
           <td>{{ item.name }}</td>
           <td>
-            <input type="number" class="form-control" [(ngModel)]="item.quantity" (change)="updateTotal()" />
+            <input type="number" class="form-control" [(ngModel)]="item.quantity" 
+            (change)="updateTotal()" 
+            min="1"
+            step="1"
+             />
           </td>
           <td>{{ item.price | currency:'COP':'symbol':'1.0-0':'es-CO' }}</td>
           <td>{{ item.price * item.quantity | currency:'COP':'symbol':'1.0-0':'es-CO' }}</td>
@@ -40,6 +46,14 @@
   
     <!-- Total and Complete Sale -->
     <h4>Total: {{ total | currency:'COP':'symbol':'1.0-0':'es-CO' }}</h4>
-    <button class="btn btn-success" (click)="completeSale()" [disabled]="cart.length === 0">Completar venta</button>
+    <hr>
+    <div class="row">
+      <button class="btn btn-secondary ms-2 col-md-2" type="button"(click)="resetSale()">
+        Cancelar <i class="bi bi-x-circle"></i>
+      </button>
+      <button class="btn btn-success btn-lg offset-md-3 col-md-6"  (click)="completeSale()" [disabled]="disableSale()"> 
+        Completar venta <i class="bi bi-check-circle-fill"></i> 
+      </button>
+    </div>
   </div>
   

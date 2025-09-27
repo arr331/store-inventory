@@ -99,8 +99,6 @@ export class SalesService {
   
     // Get previous liquidations
     async getLiquidations(user: string, date: Date) {
-      console.log("liquidaciones")
-      console.log(user, date);
       const startOfDay = new Date(date.setHours(0,0,0,0));
       const endOfDay = new Date(date.setHours(23,59,59,999));
   

@@ -27,11 +27,8 @@ export class LiquidationComponent implements OnInit {
 
   async searchSales() {
     if (!this.selectedUser || !this.selectedDate) return;
-
     const date = new Date(this.selectedDate + "T00:00:00");
     this.pendingSales = await this.salesService.getPendingSales(this.selectedUser, date);
-    console.log(this.pendingSales);
-    
     this.previousLiquidations = await this.salesService.getLiquidations(this.selectedUser, date);
   }
 

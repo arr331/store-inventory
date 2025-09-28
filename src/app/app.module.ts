@@ -17,6 +17,9 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { registerLocaleData } from '@angular/common';
 import localeEsCO from '@angular/common/locales/es-CO';
 import { LiquidationComponent } from './pages/liquidation/liquidation.component';
+import { LiquidationListComponent } from './pages/liquidation-list/liquidation-list.component';
+import { LoadingComponent } from './shared/loading/loading.component';
+import { SuccessMessageComponent } from './shared/success-message/success-message.component';
 
 registerLocaleData(localeEsCO);
 
@@ -30,7 +33,10 @@ registerLocaleData(localeEsCO);
     ReportsComponent,
     NavbarComponent,
     LoginComponent,
-    LiquidationComponent
+    LiquidationComponent,
+    LiquidationListComponent,
+    LoadingComponent,
+    SuccessMessageComponent
   ],
   imports: [
     BrowserModule,

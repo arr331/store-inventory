@@ -7,6 +7,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { adminGuard, authGuard } from './services/auth.service';
 import { LoginComponent } from './pages/login/login.component';
 import { LiquidationComponent } from './pages/liquidation/liquidation.component';
+import { LiquidationListComponent } from './pages/liquidation-list/liquidation-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'vender', component: SalesComponent, canActivate: [authGuard] },
   { path: 'historial', component: SalesHistoryComponent, canActivate: [authGuard, adminGuard] },
   { path: 'reportes', component: ReportsComponent, canActivate: [authGuard, adminGuard] },
-  { path: 'liquidaciones', component: LiquidationComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'balance', component: LiquidationComponent, canActivate: [authGuard] },
+  { path: 'liquidaciones', component: LiquidationListComponent, canActivate: [authGuard] },
   { path: '', redirectTo: 'vender', pathMatch: 'full' }
 ];
 

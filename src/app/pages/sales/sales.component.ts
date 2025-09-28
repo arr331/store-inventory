@@ -16,6 +16,8 @@ export class SalesComponent implements OnInit, AfterViewInit {
   barcodeInput = '';
   total = 0;
   disableSaleButton = false;
+  loading = false;
+  success = false;
 
   constructor(
     private productsService: ProductsService,
@@ -58,11 +60,13 @@ export class SalesComponent implements OnInit, AfterViewInit {
       });
     }
     this.updateTotal();
+    this.barcodeInputRef.nativeElement.focus();
   }
 
   removeItem(index: number): void {
     this.cart.splice(index, 1);
     this.updateTotal();
+    this.barcodeInputRef.nativeElement.focus();
   }
 
   updateTotal(): void {
@@ -77,6 +81,7 @@ export class SalesComponent implements OnInit, AfterViewInit {
     if (this.cart.length === 0) return;
 
     this.disableSaleButton = true;
+    this.loading = true;
 
     const sale: Sale = {
       date: Timestamp.now(),
@@ -97,6 +102,9 @@ export class SalesComponent implements OnInit, AfterViewInit {
       this.cart = [];
       this.total = 0;
       this.disableSaleButton = false;
+      this.loading = false;
+      this.successMessage();
+      this.barcodeInputRef.nativeElement.focus();
     });
   }
 
@@ -104,6 +112,14 @@ export class SalesComponent implements OnInit, AfterViewInit {
     this.cart = [];
     this.total = 0;
     this.disableSaleButton = false;
+    this.barcodeInputRef.nativeElement.focus();
+  }
+
+  successMessage() {
+    this.success = true;
+    setTimeout(() => {
+      this.success = false;
+    }, 2000); // se oculta automático en 2s
   }
 }
 

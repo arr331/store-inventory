@@ -1,20 +1,22 @@
 <!-- src/app/liquidation/liquidation.component.html -->
+<app-loading [loading]="loading"></app-loading>
+<app-success-message [visible]="success" message="Liquidación guardada"></app-success-message>
 
 <div class="container mt-4">
-    <h2>Liquidaciones de ventas</h2>
+    <h2>Balance de Caja</h2>
   
     <!-- Filters -->
     <div class="row mb-3">
       <div class="col-md-4">
         <label for="user">Usuario a liquidar</label>
-        <select id="user" class="form-select" [(ngModel)]="selectedUser">
+        <select id="user" class="form-select" [(ngModel)]="selectedUser" (ngModelChange)="searchSales()">
           <option value="" disabled>Seleccione el usuario a liquidar</option>
           <option *ngFor="let u of users" [value]="u.name">{{ u.name }}</option>
         </select>
       </div>
       <div class="col-md-4">
         <label for="date">Fecha</label>
-        <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" />
+        <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" (ngModelChange)="searchSales()" />
       </div>
       <div class="col-md-4 d-flex align-items-end">
         <button class="btn btn-primary" (click)="searchSales()">Buscar ventas</button>
@@ -49,9 +51,13 @@
     </table>
     <p *ngIf="!pendingSales.length">No hay ventas pendientes</p>
   
-    <button class="btn btn-success mt-2" (click)="liquidate()" [disabled]="!pendingSales.length">
-      Liquidar ventas
-    </button>
+    <div class="d-flex justify-content-between">
+      <h3 style="margin-top: 20px;">Total en Caja {{ totalEnCaja() | currency:'COP':'symbol':'1.0-0':'es-CO' }}</h3>
+      <button class="btn btn-success btn-lg mt-2" (click)="liquidate()" [disabled]="!pendingSales.length || !isAdmin()">
+        Liquidar ventas
+      </button>
+    </div>
+
   
     <hr />
   

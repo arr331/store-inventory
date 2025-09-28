@@ -1,12 +1,14 @@
 <!-- navbar.component.html -->
 <nav *ngIf="!isLoginPage()" class="d-flex justify-content-center bg-dark p-3">
    <a *ngIf="isAdmin()" routerLink="/inventario" routerLinkActive="active"
-      class="btn btn-warning btn-lg mx-2">Inventario</a>
-   <a routerLink="/vender" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Vender</a>
+      class="btn btn-primary btn-lg mx-2">Inventario</a>
+   <a routerLink="/vender" routerLinkActive="active" class="btn btn-success btn-lg mx-2">Vender</a>
    <a *ngIf="isAdmin()" routerLink="/historial" routerLinkActive="active"
       class="btn btn-warning btn-lg mx-2">Historial</a>
-   <a *ngIf="isAdmin()" routerLink="/reportes" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Reporte</a>
-   <a *ngIf="isAdmin()" routerLink="/liquidaciones" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Liquidaciones</a>
+   <!--<a *ngIf="isAdmin()" routerLink="/reportes" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Reporte</a>-->
+   <a routerLink="/balance" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Balance de Caja</a>
+   <a routerLink="/liquidaciones" routerLinkActive="active" class="btn btn-warning btn-lg mx-2">Liquidaciones</a>
+
 
    <div class="d-flex align-items-center ms-auto">
       <i class="bi bi-person-circle fs-4 me-2"></i>

@@ -1,0 +1,89 @@
+<div class="row" style="margin: 30px">
+    <!-- Lista de liquidaciones -->
+    <!-- <div class="col-md-4 border-end">
+      <h4>Liquidaciones</h4>
+      <ul class="list-group">
+        <li
+          *ngFor="let liq of liquidations"
+          class="list-group-item list-group-item-action"
+          [class.active]="liq.id === selectedLiquidation?.id"
+          (click)="selectLiquidation(liq)"
+        >
+          <div>
+            {{ liq.createdAt.toDate() | date:'short' }}
+          </div>
+          <div>
+            Total: {{ liq.totalAmount | currency:'COP':'symbol' }}
+          </div>
+        </li>
+      </ul>
+    </div> -->
+    <div class="col-md-5 border-end">
+        <h4>Liquidaciones</h4>
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th># Ventas</th>
+                    <th>Total</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let liq of liquidations"
+                    [class.table-primary]="liq.id === selectedLiquidation?.id"
+                    (click)="selectLiquidation(liq)"
+                >
+                    <td> {{ liq.createdAt.toDate() | date:'short' }}</td>
+                    <td> {{ liq.totalSales }} </td>
+                    <td> {{ liq.totalAmount | currency:'COP':'symbol':'1.0-0':'es-CO' }} </td>
+                    <td> {{ liq.user }} </td>
+                </tr>
+            </tbody>
+        </table>
+
+      </div>
+  
+    <!-- Detalle de la liquidación seleccionada -->
+    <div class="col-md-7" *ngIf="selectedLiquidation">
+      <h4>Ventas de liquidación {{ selectedLiquidation.createdAt.toDate() | date:'short' }}</h4>
+      <hr>
+      <div>
+        Fecha de liquidación: <strong>{{ selectedLiquidation.createdAt.toDate() | date:'medium' }}</strong> 
+        <hr>
+        Número de Ventas: <strong>{{ selectedLiquidation.totalSales }}</strong> 
+        <hr>
+        <h6>
+            Total Liquidado: {{ selectedLiquidation.totalAmount | currency:'COP':'symbol' }}
+        </h6> 
+      </div>
+      <hr>
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Productos</th>
+            <th>Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sale of selectedLiquidation.sales">
+            <td>{{ sale.date.toDate() | date: 'short' }}</td>
+            <td>{{ sale.total | currency:'COP':'symbol':'1.0-0':'es-CO'  }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let item of sale.items">
+                  {{ item.name }} (x{{ item.quantity }}) - {{ item.price | currency:'COP':'symbol':'1.0-0':'es-CO'  }}
+                </li>
+              </ul>
+            </td>
+            <td>{{sale.user}}</td>
+         </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

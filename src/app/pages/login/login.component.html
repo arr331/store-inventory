@@ -1,3 +1,6 @@
+<app-error-message [visible]="error" message="Contraseña o Usuario Incorrecto"></app-error-message>
+<app-loading [loading]="loading"></app-loading>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -12,7 +15,12 @@
   
             <div class="mb-3">
               <label>Contraseña</label>
-              <input type="password" class="form-control" [(ngModel)]="password" name="password" required>
+              <div class="input-group">
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="password" placeholder="Contraseña" name="password" required/>
+                <button class="btn btn-outline-secondary" type="button" (click)="showPassword = !showPassword" (mousedown)="$event.preventDefault()">
+                  <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
             </div>
   
             <button class="btn btn-primary w-100" type="submit">Entrar</button>

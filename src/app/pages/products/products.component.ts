@@ -42,8 +42,9 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.newProduct = { ...product };
     this.selectedProductId = product.id || null;
     this.editMode = true;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  
+
   onPriceChange(value: string) {
     // quitar símbolos y comas, luego convertir a número
     const cleanValue = value.replace(/[^0-9]/g, '');

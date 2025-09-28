@@ -20,6 +20,7 @@ import { LiquidationComponent } from './pages/liquidation/liquidation.component'
 import { LiquidationListComponent } from './pages/liquidation-list/liquidation-list.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { SuccessMessageComponent } from './shared/success-message/success-message.component';
+import { ErrorMessageComponent } from './shared/error-message/error-message.component';
 
 registerLocaleData(localeEsCO);
 
@@ -36,7 +37,8 @@ registerLocaleData(localeEsCO);
     LiquidationComponent,
     LiquidationListComponent,
     LoadingComponent,
-    SuccessMessageComponent
+    SuccessMessageComponent,
+    ErrorMessageComponent
   ],
   imports: [
     BrowserModule,
